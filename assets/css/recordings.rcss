@@ -1,0 +1,97 @@
+/*
+ * Recordings list rows.
+ *
+ * Row height and margin are mirrored by kRecRowPitch in src/app_internal.h.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Recordings                                                         */
+/* ------------------------------------------------------------------ */
+
+#recordings {
+	width: 860px;
+	margin-right: 32px;
+}
+
+#recdetail {
+	flex: 1;
+}
+
+.rec-row {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 104px;
+	margin-bottom: 12px;
+	margin-right: 12px;
+	padding: 0px 22px 0px 16px;
+	background-color: #ffffff06;
+	border-left: 6px #ffffff00;
+	border-radius: 14px;
+	cursor: pointer;
+}
+
+.rec-row:hover {
+	background-color: #ffffff0c;
+}
+
+.recinfo {
+	display: block;
+	flex: 1;
+	margin-right: 18px;
+	overflow: hidden;
+}
+
+.rectitle {
+	display: block;
+	font-size: 29px;
+	font-weight: bold;
+	color: #e8edf7;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.recmeta {
+	display: block;
+	margin-top: 4px;
+	font-size: 21px;
+	color: #8593ab;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.recstate {
+	box-sizing: border-box;
+	display: block;
+	width: 220px;
+	font-size: 20px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	text-align: right;
+	color: #5a6478;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.rec-row.pending .recstate {
+	color: #ff8f8f;
+}
+
+.rec-row.failed .recstate {
+	color: #ff8f6e;
+}
+
+.rec-row.selected {
+	background-color: #1a2336;
+	border-left: 6px #ffffff34;
+}
+
+#recordings.active .rec-row.selected {
+	background-color: #232f47;
+	border-left: 6px #f5b453;
+}
+
+#recordings.active .rec-row.selected .rectitle {
+	color: #ffffff;
+}

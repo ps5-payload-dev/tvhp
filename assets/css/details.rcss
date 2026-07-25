@@ -1,0 +1,90 @@
+/*
+ * The shared detail box used by the guide and the recordings view, plus
+ * the transient toast.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Details                                                            */
+/* ------------------------------------------------------------------ */
+
+.detail-box {
+	box-sizing: border-box;
+	display: block;
+	height: 272px;
+	margin-top: 24px;
+	padding: 30px 34px;
+	background-color: #ffffff07;
+	border: 2px #ffffff10;
+	border-radius: 18px;
+	overflow: hidden;
+}
+
+/* The recordings pane has no list above it, so its detail box gets the
+ * space instead. */
+.detail-box.tall {
+	flex: 1;
+	height: auto;
+	margin-top: 0px;
+}
+
+.detail-rec {
+	box-sizing: border-box;
+	display: inline-block;
+	margin-top: 12px;
+	padding: 6px 15px;
+	font-size: 20px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	color: #ff5c5c;
+	background-color: #ff5c5c1f;
+	border: 1px #ff5c5c4d;
+	border-radius: 9px;
+}
+
+.detail-title {
+	display: block;
+	font-size: 34px;
+	font-weight: bold;
+	color: #e8edf7;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.detail-meta {
+	display: block;
+	margin-top: 8px;
+	font-size: 22px;
+	color: #f5b453;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.detail-desc {
+	display: block;
+	margin-top: 16px;
+	font-size: 24px;
+	line-height: 34px;
+	color: #aab6cc;
+	overflow: hidden;
+}
+
+/* ------------------------------------------------------------------ */
+/* Toast                                                              */
+/* ------------------------------------------------------------------ */
+
+#toast {
+	box-sizing: border-box;
+	position: absolute;
+	bottom: 130px;
+	left: 660px;
+	width: 600px;
+	padding: 20px 28px;
+	font-size: 26px;
+	font-weight: bold;
+	text-align: center;
+	color: #e8edf7;
+	background-color: #1a2336f2;
+	border: 2px #f5b45360;
+	border-radius: 14px;
+	z-index: 100;
+}

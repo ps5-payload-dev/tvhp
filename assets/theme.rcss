@@ -1,0 +1,25 @@
+/*
+ * Designed for a 1920x1080 context viewed from the couch: large type, high
+ * contrast, generous spacing, and an unmissable focus treatment. Palette is
+ * a deep blue-slate night background with a warm "tuner amber" accent used
+ * exclusively for focus/selection, plus a red reserved for on-air markers.
+ *
+ *   background   #0a0e18 / #111a2b
+ *   panel        #ffffff07 .. #ffffff14
+ *   text         #e8edf7    muted #8593ab    faint #5a6478
+ *   accent       #f5b453 (focus / selection only)
+ *   live         #ff5c5c (on-air only)
+ *
+ * The per-view rules live in assets/css/; this file holds the palette note
+ * and the global body scaffold that all of them build on.
+ */
+
+body {
+	width: 100%;
+	height: 100%;
+	font-size: 26px;
+	color: #e8edf7;
+	/* Flat color: gradient decorators need shader support, which the SDL
+	   software renderer does not provide. */
+	background-color: #0e1424;
+}

@@ -1,0 +1,182 @@
+/*
+ * Main screen scaffold: topbar, content columns, footer, and the generic
+ * pane/list chrome each view sits in.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Main screen scaffold                                               */
+/* ------------------------------------------------------------------ */
+
+#main-view {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+#topbar {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 104px;
+	padding: 0px 64px;
+}
+
+#topbar .brand {
+	display: inline-block;
+	font-size: 36px;
+	font-weight: bold;
+	letter-spacing: 6px;
+	color: #f5b453;
+}
+
+#topbar .server {
+	display: inline-block;
+	margin-left: 28px;
+	font-size: 22px;
+	color: #5a6478;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+#topbar .spacer {
+	display: block;
+	flex: 1;
+}
+
+#topbar .player-status {
+	display: inline-block;
+	margin-right: 28px;
+	font-size: 22px;
+	color: #8593ab;
+}
+
+#topbar .clock {
+	display: inline-block;
+	font-size: 42px;
+	font-weight: bold;
+	color: #e8edf7;
+}
+
+#content {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	flex: 1;
+	padding: 0px 64px;
+	overflow: hidden;
+}
+
+#footer {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 92px;
+	padding: 0px 64px;
+}
+
+.chip {
+	box-sizing: border-box;
+	display: inline-block;
+	padding: 7px 15px;
+	font-size: 19px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	color: #8593ab;
+	background-color: #ffffff0d;
+	border: 1px #ffffff1f;
+	border-radius: 8px;
+}
+
+.hint {
+	display: inline-block;
+	margin-left: 12px;
+	margin-right: 32px;
+	font-size: 21px;
+	color: #6a7488;
+}
+
+/* PlayStation-style key hint icons (dpad, cross, circle, square, triangle).
+ * The source art is 128x128, so these scale up cleanly. */
+.key-icon {
+	display: inline-block;
+	width: 48px;
+	height: 48px;
+	vertical-align: middle;
+}
+
+/* ------------------------------------------------------------------ */
+/* Panes                                                              */
+/* ------------------------------------------------------------------ */
+
+.pane {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+#channels {
+	width: 680px;
+	margin-right: 32px;
+}
+
+#epg {
+	flex: 1;
+}
+
+.pane-head {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 52px;
+	margin-bottom: 10px;
+}
+
+.eyebrow {
+	display: inline-block;
+	font-size: 20px;
+	font-weight: bold;
+	letter-spacing: 4px;
+	color: #5a6478;
+}
+
+.pane.active .eyebrow {
+	color: #f5b453;
+}
+
+.pane-head .count {
+	display: inline-block;
+	margin-left: 16px;
+	font-size: 20px;
+	color: #5a6478;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.list {
+	flex: 1;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+.list scrollbarvertical {
+	width: 8px;
+}
+
+.list scrollbarvertical slidertrack {
+	background-color: #ffffff05;
+}
+
+.list scrollbarvertical sliderbar {
+	background-color: #ffffff22;
+	border-radius: 4px;
+}
+
+.list scrollbarvertical sliderarrowdec,
+.list scrollbarvertical sliderarrowinc {
+	width: 0px;
+	height: 0px;
+}

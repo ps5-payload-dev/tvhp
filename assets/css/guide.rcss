@@ -1,0 +1,204 @@
+/*
+ * Channel list and programme guide rows.
+ *
+ * Row heights and margins here are mirrored by the pitch constants in
+ * src/app_internal.h, which keyboard scrolling uses; change both together.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Channel rows (height + margin mirrored in app.cpp)                 */
+/* ------------------------------------------------------------------ */
+
+.channel-row {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 96px;
+	margin-bottom: 12px;
+	margin-right: 12px;
+	padding: 0px 22px 0px 16px;
+	background-color: #ffffff06;
+	border-left: 6px #ffffff00;
+	border-radius: 14px;
+	cursor: pointer;
+}
+
+.channel-row:hover {
+	background-color: #ffffff0c;
+}
+
+.chnum {
+	display: block;
+	width: 92px;
+	font-size: 40px;
+	font-weight: bold;
+	color: #5a6478;
+}
+
+.chinfo {
+	display: block;
+	flex: 1;
+	margin-right: 18px;
+	overflow: hidden;
+}
+
+.chname {
+	display: block;
+	font-size: 30px;
+	font-weight: bold;
+	color: #e8edf7;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.chnow {
+	display: block;
+	margin-top: 2px;
+	font-size: 22px;
+	color: #8593ab;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.progress {
+	display: block;
+	width: 100%;
+	height: 6px;
+	margin-top: 10px;
+	background-color: #ffffff10;
+	border-radius: 3px;
+}
+
+.progress .bar {
+	display: block;
+	height: 6px;
+	background-color: #f5b453;
+	border-radius: 3px;
+}
+
+.chtime {
+	display: block;
+	width: 170px;
+	font-size: 21px;
+	text-align: right;
+	color: #5a6478;
+	white-space: nowrap;
+}
+
+/* Selection: strong amber treatment while the channel pane has focus,
+ * dimmed to a neutral marker while browsing the guide. */
+.channel-row.selected {
+	background-color: #1a2336;
+	border-left: 6px #ffffff34;
+}
+
+#channels.active .channel-row.selected {
+	background-color: #232f47;
+	border-left: 6px #f5b453;
+}
+
+#channels.active .channel-row.selected .chnum {
+	color: #f5b453;
+}
+
+.channel-row.selected .chnow,
+.channel-row.selected .chtime {
+	color: #aab6cc;
+}
+
+/* ------------------------------------------------------------------ */
+/* EPG rows (height + margin mirrored in app.cpp)                     */
+/* ------------------------------------------------------------------ */
+
+.epg-row {
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	height: 76px;
+	margin-bottom: 10px;
+	margin-right: 12px;
+	padding: 0px 20px 0px 16px;
+	background-color: #ffffff05;
+	border-left: 6px #ffffff00;
+	border-radius: 12px;
+	cursor: pointer;
+}
+
+.epg-row:hover {
+	background-color: #ffffff0b;
+}
+
+.evtime {
+	display: block;
+	width: 210px;
+	font-size: 24px;
+	color: #8593ab;
+	white-space: nowrap;
+}
+
+.evtitle {
+	display: block;
+	flex: 1;
+	font-size: 26px;
+	color: #c4cddd;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.evday {
+	box-sizing: border-box;
+	display: inline-block;
+	margin-left: 16px;
+	padding: 5px 13px;
+	font-size: 18px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	color: #8593ab;
+	background-color: #ffffff0d;
+	border-radius: 9px;
+	white-space: nowrap;
+}
+
+.epg-row.now .evtime {
+	color: #e8edf7;
+	font-weight: bold;
+}
+
+.epg-row.now .evtitle {
+	color: #e8edf7;
+	font-weight: bold;
+}
+
+.epg-row.selected {
+	background-color: #232f47;
+	border-left: 6px #f5b453;
+}
+
+.epg-row.selected .evtitle {
+	color: #ffffff;
+}
+
+/* Scheduled / in-progress recording marker in the guide. */
+.evbadge {
+	box-sizing: border-box;
+	display: inline-block;
+	margin-left: 12px;
+	padding: 5px 12px;
+	font-size: 17px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	border-radius: 9px;
+	white-space: nowrap;
+}
+
+.evbadge.rec {
+	color: #ff8f8f;
+	background-color: #ff5c5c1f;
+	border: 1px #ff5c5c4d;
+}
+
+.epg-row.rec .evtitle {
+	color: #e8edf7;
+}

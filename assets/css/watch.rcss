@@ -1,0 +1,120 @@
+/*
+ * Watch mode: hides the UI chrome so the video shows through, and styles
+ * the auto-hiding info bar over it.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Watch mode (full-screen video)                                     */
+/* ------------------------------------------------------------------ */
+
+/* Let the video drawn beneath the UI show through. */
+body.watching {
+	background-color: transparent;
+	decorator: none;
+}
+body.watching #topbar,
+body.watching #content,
+body.watching #footer {
+	display: none;
+}
+
+#watch-bar {
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	padding: 36px 56px 44px 56px;
+	background-color: #0a0e18d8;
+	border-top: 2px #ffffff14;
+}
+
+.watch-num {
+	font-size: 84px;
+	font-weight: bold;
+	color: #f5b453;
+	margin-right: 40px;
+}
+
+/* Playing a recording: the channel-number slot becomes a play/pause glyph. */
+.watch-num.transport {
+	font-size: 60px;
+	width: 96px;
+	text-align: center;
+	color: #e8edf7;
+}
+
+.watch-main {
+	display: flex;
+	flex-direction: column;
+	flex: 1;
+	margin-right: 40px;
+}
+
+.watch-name {
+	font-size: 40px;
+	font-weight: bold;
+	color: #e8edf7;
+}
+
+.watch-now {
+	margin-top: 6px;
+	font-size: 30px;
+	color: #8593ab;
+}
+
+.watch-progress {
+	margin-top: 16px;
+	width: 100%;
+	max-width: 900px;
+	height: 8px;
+	border-radius: 4px;
+	background-color: #ffffff1a;
+}
+.watch-progress .bar {
+	height: 8px;
+	border-radius: 4px;
+	background-color: #f5b453;
+}
+
+.watch-side {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.watch-time {
+	font-size: 30px;
+	color: #e8edf7;
+}
+
+.watch-status {
+	margin-top: 6px;
+	font-size: 22px;
+	letter-spacing: 2px;
+	color: #8593ab;
+}
+
+.watch-hints {
+	margin-top: 18px;
+}
+.watch-hints .chip {
+	font-size: 20px;
+	padding: 4px 12px;
+	margin-left: 14px;
+	border-radius: 8px;
+	background-color: #ffffff12;
+	color: #aab6cc;
+}
+.watch-hints .key-icon {
+	width: 42px;
+	height: 42px;
+	margin-left: 14px;
+}
+.watch-hints .hint {
+	font-size: 20px;
+	margin-left: 8px;
+	color: #5a6478;
+}

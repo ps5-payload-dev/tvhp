@@ -1,0 +1,252 @@
+<rml>
+	<head>
+		<title>tvhp</title>
+		<link type="text/rcss" href="rml.rcss"/>
+		<link type="text/rcss" href="theme.rcss"/>
+		<link type="text/rcss" href="css/connect.rcss"/>
+		<link type="text/rcss" href="css/layout.rcss"/>
+		<link type="text/rcss" href="css/guide.rcss"/>
+		<link type="text/rcss" href="css/recordings.rcss"/>
+		<link type="text/rcss" href="css/details.rcss"/>
+		<link type="text/rcss" href="css/watch.rcss"/>
+	</head>
+	<body data-model="tv" data-class-watching="watching">
+
+		<!-- ============================ Connect ============================ -->
+		<div id="connect-view" data-if="view == 'connect'">
+
+			<div id="servers" class="pane" data-class-active="dialog == ''">
+				<div class="pane-head">
+					<span class="eyebrow">Servers</span>
+					<span class="count" data-if="server_count > 0">{{server_count}}</span>
+				</div>
+				<div id="server-list" class="list">
+					<div class="server-row" data-for="srv : servers"
+					     data-class-selected="it_index == sel_server"
+					     data-event-click="select_server(it_index)">
+						<div class="srvinfo">
+							<div class="srvname">{{srv.name}}</div>
+							<div class="srvdetail">{{srv.detail}}</div>
+						</div>
+					</div>
+					<div class="empty" data-if="server_count == 0">
+						No servers yet. Press the Options button to add one.
+					</div>
+				</div>
+				<div class="status" data-if="status != ''">{{status}}</div>
+			</div>
+
+			<div class="connect-hints">
+				<img class="key-icon" src="icons/dpad.png"/><span class="hint">Navigate</span>
+				<img class="key-icon" src="icons/btn_cross.png"/><span class="hint">Connect</span>
+				<img class="key-icon" src="icons/btn_square.png"/><span class="hint">Edit</span>
+				<img class="key-icon" src="icons/btn_triangle.png"/><span class="hint">Delete</span>
+			</div>
+		</div>
+
+		<!-- Modal add/edit dialog, opened with the Options button -->
+		<div id="server-dialog" data-if="dialog != ''">
+			<div class="dialog-card">
+				<div class="dialog-title">{{dialog_title}}</div>
+
+				<div class="field">
+					<div class="label" id="lbl-name">Name</div>
+					<input type="text" id="in-name" data-value="name"/>
+				</div>
+				<div class="field">
+					<div class="label" id="lbl-host">Hostname</div>
+					<input type="text" id="in-host" data-value="host"/>
+				</div>
+				<div class="field">
+					<div class="label" id="lbl-port">Port</div>
+					<input type="text" id="in-port" data-value="port"/>
+				</div>
+				<div class="field">
+					<div class="label" id="lbl-user">Username</div>
+					<input type="text" id="in-user" data-value="user"/>
+				</div>
+				<div class="field">
+					<div class="label" id="lbl-pass">Password</div>
+					<input type="password" id="in-pass" data-value="pass"/>
+				</div>
+
+				<button id="btn-save" data-event-click="save">Save</button>
+
+				<div class="status" data-if="status != ''">{{status}}</div>
+
+				<div class="dialog-hints">
+					<img class="key-icon" src="icons/dpad.png"/><span class="hint">Navigate</span>
+					<img class="key-icon" src="icons/btn_cross.png"/><span class="hint">Save</span>
+					<img class="key-icon" src="icons/btn_circle.png"/><span class="hint">Cancel</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- ============================= Main ============================== -->
+		<div id="main-view" data-if="view == 'main'">
+
+			<div id="topbar">
+				<span class="server">{{server}}</span>
+				<span class="spacer"/>
+				<span class="player-status" data-if="player_status != ''">{{player_status}}</span>
+				<span class="clock">{{clock}}</span>
+			</div>
+
+			<div id="content">
+
+				<!-- ==================== Channels ==================== -->
+				<div id="channels" class="pane" data-if="section == 'channels'"
+				     data-class-active="zone == 'channels'">
+					<div class="pane-head">
+						<span class="eyebrow">Channels</span>
+						<span class="count">{{channel_count}}</span>
+					</div>
+					<div id="channel-list" class="list">
+						<div class="channel-row" data-for="ch : channels"
+						     data-class-selected="it_index == sel_channel"
+						     data-event-click="select_channel(it_index)">
+							<div class="chnum">{{ch.number}}</div>
+							<div class="chinfo">
+								<div class="chname">{{ch.name}}</div>
+								<div class="chnow">{{ch.now_title}}</div>
+								<div class="progress" data-if="ch.has_now">
+									<div class="bar" data-style-width="ch.progress_style"/>
+								</div>
+							</div>
+							<div class="chtime" data-if="ch.has_now">{{ch.now_time}}</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Programme guide for the selected channel -->
+				<div id="epg" class="pane" data-if="section == 'channels'"
+				     data-class-active="zone == 'epg'">
+					<div class="pane-head">
+						<span class="eyebrow">Guide</span>
+						<span class="count">{{epg_channel}}</span>
+					</div>
+					<div id="epg-list" class="list">
+						<!-- NOTE: don't rename the iterator to "ev":
+						     addresses starting with "ev." are reserved by
+						     RmlUi for event parameters and silently bypass
+						     data-for aliases. -->
+						<div class="epg-row" data-for="prog : epg"
+						     data-class-selected="it_index == sel_epg && zone == 'epg'"
+						     data-class-now="prog.now"
+						     data-class-rec="prog.recording"
+						     data-event-click="select_epg(it_index)">
+							<div class="evtime">{{prog.time}}</div>
+							<div class="evtitle">{{prog.title}}</div>
+							<div class="evbadge rec" data-if="prog.rec != ''">{{prog.rec}}</div>
+							<div class="evday" data-if="prog.day != ''">{{prog.day}}</div>
+							<div class="evday" data-if="prog.now">Now</div>
+						</div>
+					</div>
+
+					<div id="detail" class="detail-box">
+						<div class="detail-title">{{detail_title}}</div>
+						<div class="detail-meta" data-if="detail_meta != ''">{{detail_meta}}</div>
+						<div class="detail-rec" data-if="detail_rec != ''">{{detail_rec}}</div>
+						<div class="detail-desc">{{detail_desc}}</div>
+					</div>
+				</div>
+
+				<!-- ==================== Recordings ==================== -->
+				<div id="recordings" class="pane" data-if="section == 'recordings'"
+				     data-class-active="zone == 'recordings'">
+					<div class="pane-head">
+						<span class="eyebrow">Recordings</span>
+						<span class="count">{{rec_count}}</span>
+					</div>
+					<div id="rec-list" class="list">
+						<div class="rec-row" data-for="rec : recordings"
+						     data-class-selected="it_index == sel_rec"
+						     data-class-pending="rec.pending"
+						     data-class-failed="rec.failed"
+						     data-event-click="select_rec(it_index)">
+							<div class="recinfo">
+								<div class="rectitle">{{rec.title}}</div>
+								<div class="recmeta">{{rec.meta}}</div>
+							</div>
+							<div class="recstate">{{rec.state}}</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Details for the selected recording -->
+				<div id="recdetail" class="pane" data-if="section == 'recordings'">
+					<div class="pane-head">
+						<span class="eyebrow">Details</span>
+					</div>
+
+					<div id="rec-detail" class="detail-box tall">
+						<div class="detail-title">{{detail_title}}</div>
+						<div class="detail-meta" data-if="detail_meta != ''">{{detail_meta}}</div>
+						<div class="detail-rec" data-if="detail_rec != ''">{{detail_rec}}</div>
+						<div class="detail-desc">{{detail_desc}}</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div id="footer">
+				<img class="key-icon" src="icons/dpad.png"/><span class="hint">Navigate</span>
+
+				<img class="key-icon" src="icons/btn_cross.png" data-if="section == 'channels' && zone == 'channels'"/>
+				<span class="hint" data-if="section == 'channels' && zone == 'channels'">Play</span>
+
+				<img class="key-icon" src="icons/btn_cross.png" data-if="section == 'channels' && zone == 'epg'"/>
+				<span class="hint" data-if="section == 'channels' && zone == 'epg'">Record</span>
+
+				<img class="key-icon" src="icons/btn_cross.png" data-if="section == 'recordings'"/>
+				<span class="hint" data-if="section == 'recordings'">Play</span>
+
+				<img class="key-icon" src="icons/btn_square.png"/>
+				<span class="hint" data-if="section == 'channels'">Recordings</span>
+				<span class="hint" data-if="section == 'recordings'">Guide</span>
+
+
+				<img class="key-icon" src="icons/btn_triangle.png" data-if="section == 'recordings'"/>
+				<span class="hint" data-if="section == 'recordings'">Delete</span>
+			</div>
+
+		</div>
+
+		<!-- Watch mode: full-screen video with an auto-hiding info bar -->
+		<div id="watch-bar" data-if="watching && info_visible">
+			<div class="watch-num" data-class-transport="watch_recorded">{{watch_num}}</div>
+			<div class="watch-main">
+				<div class="watch-name">{{watch_name}}</div>
+				<div class="watch-now" data-if="watch_now != ''">{{watch_now}}</div>
+				<div class="watch-progress" data-if="watch_time != ''">
+					<div class="bar" data-style-width="watch_progress"/>
+				</div>
+			</div>
+			<div class="watch-side">
+				<div class="watch-time">{{watch_time}}</div>
+				<div class="watch-status" data-if="player_status != ''">{{player_status}}</div>
+
+				<!-- Live TV -->
+				<div class="watch-hints" data-if="!watch_recorded">
+					<img class="key-icon" src="icons/dpad_ud.png"/><span class="hint">Zap</span>
+					<img class="key-icon" src="icons/btn_cross.png"/><span class="hint">Info</span>
+					<img class="key-icon" src="icons/btn_circle.png"/><span class="hint">Back</span>
+				</div>
+
+				<!-- Recording playback -->
+				<div class="watch-hints" data-if="watch_recorded">
+					<img class="key-icon" src="icons/dpad_lr.png"/><span class="hint">30sec</span>
+					<img class="key-icon" src="icons/dpad_ud.png"/><span class="hint">5min</span>
+					<img class="key-icon" src="icons/btn_cross.png"/>
+					<span class="hint" data-if="!watch_paused">Pause</span>
+					<span class="hint" data-if="watch_paused">Play</span>
+					<img class="key-icon" src="icons/btn_circle.png"/><span class="hint">Back</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Toast -->
+		<div id="toast" data-if="toast != ''">{{toast}}</div>
+
+	</body>
+</rml>
