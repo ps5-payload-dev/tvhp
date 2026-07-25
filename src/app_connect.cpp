@@ -12,9 +12,11 @@ using namespace appdetail;
 
 namespace {
   // Connect view form rows: label on the left, input on the right. The last
-  // row (the button) has no input. Up/down walks the rows and always lands on
-  // the label/button, so focus never enters an <input> - and SDL never starts
-  // text input - unless the user presses right on a row.
+  // row is the Save/Cancel button pair: Save sits in the label slot and
+  // Cancel in the input slot, so left/right moves between the two buttons.
+  // Up/down walks the rows and always lands on the label/button, so focus
+  // never enters an <input> - and SDL never starts text input - unless the
+  // user presses right on a row.
   struct FormRow { const char* label; const char* input; };
   constexpr FormRow kFormRows[] = {
     {"lbl-name", "in-name"},
@@ -22,7 +24,7 @@ namespace {
     {"lbl-port", "in-port"},
     {"lbl-user", "in-user"},
     {"lbl-pass", "in-pass"},
-    {"btn-save", nullptr},
+    {"btn-save", "btn-cancel"},
   };
   constexpr int kFormRowCount = (int)(sizeof(kFormRows) / sizeof(kFormRows[0]));
 }
@@ -374,16 +376,11 @@ void App::HandleKeyConnect(Rml::Event& event, int key)
       if (FocusFormLabel())
 	event.StopPropagation();
       break;
-    case Rml::Input::KI_BACK: // circle: close without saving
-      CloseServerDialog();
-      event.StopPropagation();
-      break;
-    case Rml::Input::KI_RETURN:
-    case Rml::Input::KI_NUMPADENTER:
-      SaveServer();
-      event.StopPropagation();
-      break;
     default:
-      break; // let text inputs handle everything else
+      // Everything else - including KI_RETURN - propagates. RmlUi's document
+      // default action clicks the focused element on Enter/Space, so the
+      // Save and Cancel buttons activate via their data-event-click handlers
+      // when focused. There is no longer a global save key.
+      break;
     }
 }

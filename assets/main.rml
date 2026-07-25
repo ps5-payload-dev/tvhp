@@ -70,15 +70,12 @@
 					<input type="password" id="in-pass" data-value="pass"/>
 				</div>
 
-				<button id="btn-save" data-event-click="save">Save</button>
+				<div class="dialog-buttons">
+					<button id="btn-save" data-event-click="save">Save</button>
+					<button id="btn-cancel" data-event-click="cancel">Cancel</button>
+				</div>
 
 				<div class="status" data-if="status != ''">{{status}}</div>
-
-				<div class="dialog-hints">
-					<img class="key-icon" src="icons/dpad.png"/><span class="hint">Navigate</span>
-					<img class="key-icon" src="icons/btn_cross.png"/><span class="hint">Save</span>
-					<img class="key-icon" src="icons/btn_circle.png"/><span class="hint">Cancel</span>
-				</div>
 			</div>
 		</div>
 

@@ -152,6 +152,9 @@ bool App::SetupDataModel(Rml::Context* context, std::string& error) {
   ctor.BindEventCallback("save", [this](Rml::DataModelHandle, Rml::Event&, const Rml::VariantList&) {
     SaveServer();
   });
+  ctor.BindEventCallback("cancel", [this](Rml::DataModelHandle, Rml::Event&, const Rml::VariantList&) {
+    CloseServerDialog();
+  });
   ctor.BindEventCallback("select_server", [this](Rml::DataModelHandle, Rml::Event&, const Rml::VariantList& args) {
     if (args.empty())
       return;

@@ -216,6 +216,21 @@ button:focus, button:hover {
 	border: 2px #ffd28a;
 }
 
+.dialog-buttons {
+	display: block;
+	margin-top: 12px;
+}
+
+.dialog-buttons button {
+	display: inline-block;
+	width: 48%;
+	margin-top: 0px;
+}
+
+.dialog-buttons #btn-save {
+	margin-right: 4%;
+}
+
 button span {
 	display: inline;
 }
