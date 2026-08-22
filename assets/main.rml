@@ -222,23 +222,6 @@
 			<div class="watch-side">
 				<div class="watch-time">{{watch_time}}</div>
 				<div class="watch-status" data-if="player_status != ''">{{player_status}}</div>
-
-				<!-- Live TV -->
-				<div class="watch-hints" data-if="!watch_recorded">
-					<img class="key-icon" src="icons/dpad_ud.png"/><span class="hint">Zap</span>
-					<img class="key-icon" src="icons/btn_cross.png"/><span class="hint">Info</span>
-					<img class="key-icon" src="icons/btn_circle.png"/><span class="hint">Back</span>
-				</div>
-
-				<!-- Recording playback -->
-				<div class="watch-hints" data-if="watch_recorded">
-					<img class="key-icon" src="icons/dpad_lr.png"/><span class="hint">30sec</span>
-					<img class="key-icon" src="icons/dpad_ud.png"/><span class="hint">5min</span>
-					<img class="key-icon" src="icons/btn_cross.png"/>
-					<span class="hint" data-if="!watch_paused">Pause</span>
-					<span class="hint" data-if="watch_paused">Play</span>
-					<img class="key-icon" src="icons/btn_circle.png"/><span class="hint">Back</span>
-				</div>
 			</div>
 		</div>
 
