@@ -37,7 +37,6 @@
 			</div>
 
 			<div class="connect-hints">
-				<img class="key-icon" src="icons/dpad.png"/><span class="hint">Navigate</span>
 				<img class="key-icon" src="icons/btn_cross.png"/><span class="hint">Connect</span>
 				<img class="key-icon" src="icons/btn_square.png"/><span class="hint">Edit</span>
 				<img class="key-icon" src="icons/btn_triangle.png"/><span class="hint">Delete</span>
@@ -187,16 +186,8 @@
 			</div>
 
 			<div id="footer">
-				<img class="key-icon" src="icons/dpad.png"/><span class="hint">Navigate</span>
-
-				<img class="key-icon" src="icons/btn_cross.png" data-if="section == 'channels' && zone == 'channels'"/>
-				<span class="hint" data-if="section == 'channels' && zone == 'channels'">Play</span>
-
 				<img class="key-icon" src="icons/btn_cross.png" data-if="section == 'channels' && zone == 'epg'"/>
 				<span class="hint" data-if="section == 'channels' && zone == 'epg'">Record</span>
-
-				<img class="key-icon" src="icons/btn_cross.png" data-if="section == 'recordings'"/>
-				<span class="hint" data-if="section == 'recordings'">Play</span>
 
 				<img class="key-icon" src="icons/btn_square.png"/>
 				<span class="hint" data-if="section == 'channels'">Recordings</span>
