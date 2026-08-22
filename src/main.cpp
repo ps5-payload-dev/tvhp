@@ -9,7 +9,7 @@
 #define SCREEN_HEIGHT 1080
 
 
-int main() {
+int SDL_main(int argc, char* args[]) {
   Rml::Context* ctx;
   std::string err;
   App app;
@@ -58,3 +58,10 @@ int main() {
 
   return 0;
 }
+
+
+#ifndef __SCE__
+int main(int argc, char** argv) {
+  return SDL_main(argc, argv);
+}
+#endif
