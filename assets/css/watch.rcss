@@ -70,12 +70,10 @@ body.watching #footer {
 	width: 100%;
 	max-width: 900px;
 	height: 8px;
-	border-radius: 4px;
 	background-color: #ffffff1a;
 }
 .watch-progress .bar {
 	height: 8px;
-	border-radius: 4px;
 	background-color: #f5b453;
 }
 
@@ -104,7 +102,6 @@ body.watching #footer {
 	font-size: 20px;
 	padding: 4px 12px;
 	margin-left: 14px;
-	border-radius: 8px;
 	background-color: #ffffff12;
 	color: #aab6cc;
 }

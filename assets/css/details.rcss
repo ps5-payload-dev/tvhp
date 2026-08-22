@@ -15,7 +15,6 @@
 	padding: 30px 34px;
 	background-color: #ffffff07;
 	border: 2px #ffffff10;
-	border-radius: 18px;
 	overflow: hidden;
 }
 
@@ -38,7 +37,6 @@
 	color: #ff5c5c;
 	background-color: #ff5c5c1f;
 	border: 1px #ff5c5c4d;
-	border-radius: 9px;
 }
 
 .detail-title {
@@ -85,6 +83,5 @@
 	color: #e8edf7;
 	background-color: #1a2336f2;
 	border: 2px #f5b45360;
-	border-radius: 14px;
 	z-index: 100;
 }

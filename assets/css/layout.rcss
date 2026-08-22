@@ -87,7 +87,6 @@
 	color: #8593ab;
 	background-color: #ffffff0d;
 	border: 1px #ffffff1f;
-	border-radius: 8px;
 }
 
 .hint {
@@ -172,7 +171,6 @@
 
 .list scrollbarvertical sliderbar {
 	background-color: #ffffff22;
-	border-radius: 4px;
 }
 
 .list scrollbarvertical sliderarrowdec,

@@ -28,7 +28,6 @@
 	padding: 0px 22px 0px 16px;
 	background-color: #ffffff06;
 	border-left: 6px #ffffff00;
-	border-radius: 14px;
 	cursor: pointer;
 }
 

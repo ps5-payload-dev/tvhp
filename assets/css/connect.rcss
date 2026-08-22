@@ -32,7 +32,6 @@
 	padding: 0px 24px;
 	background-color: #ffffff06;
 	border-left: 6px #ffffff00;
-	border-radius: 14px;
 	cursor: pointer;
 }
 
@@ -115,7 +114,6 @@
 	padding: 44px 52px;
 	background-color: #141b2b;
 	border: 2px #ffffff1f;
-	border-radius: 22px;
 }
 
 .dialog-title {
@@ -163,7 +161,6 @@
 	letter-spacing: 3px;
 	color: #8593ab;
 	border: 2px #ffffff00;
-	border-radius: 8px;
 	tab-index: auto;
 }
 
@@ -183,7 +180,6 @@ input.text, input.password {
 	color: #e8edf7;
 	background-color: #ffffff0a;
 	border: 2px #ffffff1c;
-	border-radius: 12px;
 	tab-index: auto;
 	caret-color: #f5b453;
 }
@@ -206,7 +202,6 @@ button {
 	color: #171006;
 	background-color: #d99a3f;
 	border: 2px #d99a3f;
-	border-radius: 12px;
 	tab-index: auto;
 	cursor: pointer;
 }

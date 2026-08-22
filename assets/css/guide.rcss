@@ -20,7 +20,6 @@
 	padding: 0px 22px 0px 16px;
 	background-color: #ffffff06;
 	border-left: 6px #ffffff00;
-	border-radius: 14px;
 	cursor: pointer;
 }
 
@@ -67,14 +66,12 @@
 	height: 6px;
 	margin-top: 10px;
 	background-color: #ffffff10;
-	border-radius: 3px;
 }
 
 .progress .bar {
 	display: block;
 	height: 6px;
 	background-color: #f5b453;
-	border-radius: 3px;
 }
 
 .chtime {
@@ -122,7 +119,6 @@
 	padding: 0px 20px 0px 16px;
 	background-color: #ffffff05;
 	border-left: 6px #ffffff00;
-	border-radius: 12px;
 	cursor: pointer;
 }
 
@@ -157,7 +153,6 @@
 	letter-spacing: 2px;
 	color: #8593ab;
 	background-color: #ffffff0d;
-	border-radius: 9px;
 	white-space: nowrap;
 }
 
@@ -189,7 +184,6 @@
 	font-size: 17px;
 	font-weight: bold;
 	letter-spacing: 2px;
-	border-radius: 9px;
 	white-space: nowrap;
 }
 
