@@ -5,6 +5,7 @@
 #include <RmlUi/Core/TextInputContext.h>
 
 #include "Platform_SDL.h"
+#include "../keymap.h"
 
 static Rml::TouchList TouchEventToTouchList(SDL_Event& ev, Rml::Context* context, SDL_FingerID finger_id) {
   const Rml::Vector2f position = Rml::Vector2f{ev.tfinger.x, ev.tfinger.y} * Rml::Vector2f{context->GetDimensions()};
@@ -265,12 +266,32 @@ Rml::Input::KeyIdentifier RmlSDL::ConvertKey(int sdlkey) {
   case SDLK_RGUI:          return Rml::Input::KI_RMETA;
     //case SDLK_LSUPER:        return Rml::Input::KI_LWIN;
     //case SDLK_RSUPER:        return Rml::Input::KI_RWIN;
+
+  // Keys the PS5 remote control sends that a PC keyboard rarely has. The
+  // remote's "menu" and "context menu" buttons both land on KI_APPS, which
+  // is what the Options button on the pad maps to.
+  case SDLK_MENU:          return Rml::Input::KI_APPS;
+  case SDLK_APPLICATION:   return Rml::Input::KI_APPS;
+  case SDLK_AUDIOPLAY:     return Rml::Input::KI_MEDIA_PLAY_PAUSE;
+  case SDLK_AUDIOSTOP:     return Rml::Input::KI_MEDIA_STOP;
+  case SDLK_AUDIOPREV:     return Rml::Input::KI_MEDIA_PREV_TRACK;
+  case SDLK_AUDIONEXT:     return Rml::Input::KI_MEDIA_NEXT_TRACK;
+  case SDLK_AUDIOREWIND:
+    return (Rml::Input::KeyIdentifier)keymap::KI_MEDIA_REWIND;
+  case SDLK_AUDIOFASTFORWARD:
+    return (Rml::Input::KeyIdentifier)keymap::KI_MEDIA_FAST_FORWARD;
+
   default: break;
   }
 
   return Rml::Input::KI_UNKNOWN;
 }
 
+// The pad is mapped onto the keys the remote control already sends, so that
+// both devices arrive at the same commands (see src/keymap.h). Circle is
+// Escape rather than Backspace because that is what the remote's back button
+// produces, and Square is Tab rather than Space because the remote's
+// play/pause button produces Space.
 Rml::Input::KeyIdentifier RmlSDL::ConvertControllerButton(int sdlbtn) {
   switch (sdlbtn) {
   case SDL_CONTROLLER_BUTTON_DPAD_UP:       return Rml::Input::KI_UP;
@@ -278,13 +299,15 @@ Rml::Input::KeyIdentifier RmlSDL::ConvertControllerButton(int sdlbtn) {
   case SDL_CONTROLLER_BUTTON_DPAD_LEFT:     return Rml::Input::KI_LEFT;
   case SDL_CONTROLLER_BUTTON_DPAD_RIGHT:    return Rml::Input::KI_RIGHT;
   case SDL_CONTROLLER_BUTTON_A:             return Rml::Input::KI_RETURN;
-  case SDL_CONTROLLER_BUTTON_B:             return Rml::Input::KI_BACK;
-  case SDL_CONTROLLER_BUTTON_X:             return Rml::Input::KI_SPACE;
-  case SDL_CONTROLLER_BUTTON_Y:             return Rml::Input::KI_ESCAPE;
+  case SDL_CONTROLLER_BUTTON_B:             return Rml::Input::KI_ESCAPE;
+  case SDL_CONTROLLER_BUTTON_X:             return Rml::Input::KI_TAB;
+  case SDL_CONTROLLER_BUTTON_Y:             return Rml::Input::KI_DELETE;
   case SDL_CONTROLLER_BUTTON_LEFTSHOULDER:  return Rml::Input::KI_PRIOR;
   case SDL_CONTROLLER_BUTTON_RIGHTSHOULDER: return Rml::Input::KI_NEXT;
-  // Options (Start) opens contextual menus; F1 so a keyboard can reach it.
-  case SDL_CONTROLLER_BUTTON_START:         return Rml::Input::KI_F1;
+  // Options (Start) opens contextual menus, as do the remote's menu and
+  // context-menu buttons; KI_APPS is the key both keyboards and the remote
+  // use for that.
+  case SDL_CONTROLLER_BUTTON_START:         return Rml::Input::KI_APPS;
   default: break;
   }
 

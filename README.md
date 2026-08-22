@@ -23,6 +23,33 @@ connection that carries the channel list and the guide.
 - Designed for a 1920x1080 screen at couch distance: large type, high
   contrast, and a single unmistakable focus colour.
 
+## Controls
+
+`tvhp` can be driven from a DualSense pad, from an HDMI-CEC remote control, or
+from a USB keyboard. The PS5 port of SDL2 reports the remote as keyboard keys,
+so all three devices meet in one table (`src/keymap.h`) and every command is
+reachable from any of them.
+
+| Command | Pad | Remote | Keyboard |
+| --- | --- | --- | --- |
+| Navigate | D-pad | D-pad | Arrows |
+| Page up / down | L1 / R1 | P+ / P- | Page Up / Page Down |
+| Select, record, play/pause | Cross | Enter | Enter |
+| Back, cancel | Circle | Back | Escape, Backspace |
+| Guide ↔ recordings, info bar | Square | Display | Tab |
+| Delete recording or server | Triangle | Red | Delete |
+| Add a server | Options | Menu | Insert |
+| Jump to the guide | — | Guide | F9 |
+| Play / pause | Cross | Play, Pause | Space |
+| Stop | Circle | Stop | — |
+| Seek ±5 min | Up / Down | Rewind, Fast forward | — |
+| Seek ±30 s | Left / Right | — | Left / Right |
+
+The remote's table is fixed by SDL, so it decides the key identifiers and the
+pad is mapped onto them rather than the other way round. That is why Circle is
+Escape rather than Backspace, and why Square is Tab rather than Space: the
+remote's back button sends Escape, and its play/pause button sends Space.
+
 ## Requirements
 
 - A jailbroken PS5 running [ps5-payload-dev/websrv][websrv] or an equivalent

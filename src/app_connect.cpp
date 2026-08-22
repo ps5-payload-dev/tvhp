@@ -7,6 +7,7 @@
 
 #include "app.h"
 #include "app_internal.h"
+#include "keymap.h"
 
 using namespace appdetail;
 
@@ -327,25 +328,25 @@ void App::HandleKeyConnect(Rml::Event& event, int key)
 {
   if (zone_ == Zone::ServerList)
     {
-      switch (key)
+      switch (keymap::Command(key))
 	{
-	case Rml::Input::KI_UP:
+	case keymap::Cmd::Up:
 	  MoveSelection(-1);
 	  break;
-	case Rml::Input::KI_DOWN:
+	case keymap::Cmd::Down:
 	  MoveSelection(+1);
 	  break;
-	case Rml::Input::KI_F1: // options: add a server
+	case keymap::Cmd::Options: // options / the remote's menu button
 	  OpenServerDialog(true);
 	  break;
-	case Rml::Input::KI_SPACE: // square: edit this server
+	case keymap::Cmd::Secondary: // square: edit this server
 	  OpenServerDialog(false);
 	  break;
-	case Rml::Input::KI_ESCAPE: // triangle: forget this server
+	case keymap::Cmd::Remove: // triangle: forget this server
 	  DeleteSelectedServer();
 	  break;
-	case Rml::Input::KI_RETURN:
-	case Rml::Input::KI_NUMPADENTER:
+	case keymap::Cmd::Ok:
+	case keymap::Cmd::PlayPause: // the remote's play button connects too
 	  StartConnect();
 	  break;
 	default:
@@ -355,7 +356,16 @@ void App::HandleKeyConnect(Rml::Event& event, int key)
       return;
     }
 
-  // Form zone.
+  // Form zone. This is the one place with text fields, so Cmd::Back is not
+  // used here: it also covers Backspace, which has to reach the inputs.
+  // Escape alone - circle on the pad, back on the remote - closes the dialog.
+  if (key == Rml::Input::KI_ESCAPE)
+    {
+      CloseServerDialog();
+      event.StopPropagation();
+      return;
+    }
+
   switch (key)
     {
     case Rml::Input::KI_UP:

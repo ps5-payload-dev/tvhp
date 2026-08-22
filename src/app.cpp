@@ -8,6 +8,7 @@
 
 #include "app.h"
 #include "app_internal.h"
+#include "keymap.h"
 
 using namespace appdetail;
 
@@ -577,47 +578,27 @@ void App::HandleKeyMain(Rml::Event& event, int key)
       return;
     }
 
-  // Square switches between the guide and the recordings library.
-  if (key == Rml::Input::KI_SPACE)
+  switch (keymap::Command(key))
     {
-      SetSection(section_ == Section::Channels ? Section::Recordings : Section::Channels);
-      event.StopPropagation();
-      return;
-    }
-
-  // Triangle removes the highlighted recording. It does nothing anywhere
-  // else, so a stray press from the couch is harmless.
-  if (key == Rml::Input::KI_ESCAPE)
-    {
-      if (section_ == Section::Recordings)
-	{
-	  RemoveSelectedRecording();
-	  event.StopPropagation();
-	}
-      return;
-    }
-
-  switch (key)
-    {
-    case Rml::Input::KI_UP:
+    case keymap::Cmd::Up:
       MoveSelection(-1);
       break;
-    case Rml::Input::KI_DOWN:
+    case keymap::Cmd::Down:
       MoveSelection(+1);
       break;
-    case Rml::Input::KI_PRIOR: // page up / left shoulder
+    case keymap::Cmd::PageUp: // left shoulder / "p+"
       MoveSelection(-8);
       break;
-    case Rml::Input::KI_NEXT: // page down / right shoulder
+    case keymap::Cmd::PageDown: // right shoulder / "p-"
       MoveSelection(+8);
       break;
-    case Rml::Input::KI_HOME:
+    case keymap::Cmd::Home:
       MoveSelection(-1000000);
       break;
-    case Rml::Input::KI_END:
+    case keymap::Cmd::End:
       MoveSelection(+1000000);
       break;
-    case Rml::Input::KI_RIGHT:
+    case keymap::Cmd::Right:
       if (section_ == Section::Channels && !epg_rows_.empty())
 	{
 	  SetZone(Zone::Epg);
@@ -625,11 +606,38 @@ void App::HandleKeyMain(Rml::Event& event, int key)
 	  model_.DirtyVariable("sel_epg");
 	}
       break;
-    case Rml::Input::KI_LEFT:
+    case keymap::Cmd::Left:
       if (zone_ == Zone::Epg)
 	SetZone(Zone::Channels);
       break;
-    case Rml::Input::KI_BACK: // backspace / circle
+
+    // Square switches between the guide and the recordings library.
+    case keymap::Cmd::Secondary:
+      SetSection(section_ == Section::Channels ? Section::Recordings : Section::Channels);
+      break;
+
+    // The remote has a dedicated Guide button, which always means "show me
+    // the channels", and steps into the programme list if it is already there.
+    case keymap::Cmd::Guide:
+      if (section_ != Section::Channels)
+	SetSection(Section::Channels);
+      else if (zone_ == Zone::Channels && !epg_rows_.empty())
+	{
+	  SetZone(Zone::Epg);
+	  scroll_epg_pending_ = true;
+	  model_.DirtyVariable("sel_epg");
+	}
+      break;
+
+    // Triangle removes the highlighted recording. It does nothing anywhere
+    // else, so a stray press from the couch is harmless.
+    case keymap::Cmd::Remove:
+      if (section_ != Section::Recordings)
+	return;
+      RemoveSelectedRecording();
+      break;
+
+    case keymap::Cmd::Back:
       // Back steps up one level, and from the top of either section it
       // returns to the server list so another server can be picked.
       if (zone_ == Zone::Epg)
@@ -644,10 +652,28 @@ void App::HandleKeyMain(Rml::Event& event, int key)
       else
 	DisconnectToLogin();
       break;
-    case Rml::Input::KI_RETURN:
-    case Rml::Input::KI_NUMPADENTER:
+
+    // Stop only ever means stop; it never navigates.
+    case keymap::Cmd::Stop:
+      if (!player_ || !player_->IsPlaying())
+	return;
+      StopPlayback();
+      ShowToast("Playback stopped");
+      break;
+
+    // Play starts whatever is highlighted, but only where that is what the
+    // cross button would do: in the guide, cross schedules a recording, and
+    // the play button should not.
+    case keymap::Cmd::PlayPause:
+      if (zone_ == Zone::Epg)
+	return;
       ActivateSelection();
       break;
+
+    case keymap::Cmd::Ok:
+      ActivateSelection();
+      break;
+
     default:
       return; // unhandled: let it propagate
     }

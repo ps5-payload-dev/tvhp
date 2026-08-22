@@ -5,6 +5,7 @@
 
 #include "app.h"
 #include "app_internal.h"
+#include "keymap.h"
 #include "format.h"
 
 using namespace appdetail;
@@ -173,26 +174,41 @@ void App::HandleKeyWatch(Rml::Event& event, int key)
 {
   const bool recorded = player_ && player_->IsRecordingPlayback();
 
+  const keymap::Cmd cmd = keymap::Command(key);
+
   if (recorded)
     {
-      switch (key)
+      switch (cmd)
 	{
-	case Rml::Input::KI_LEFT:
-	case Rml::Input::KI_RIGHT:
-	case Rml::Input::KI_UP:
-	case Rml::Input::KI_DOWN:
-	case Rml::Input::KI_PRIOR:
-	case Rml::Input::KI_NEXT:
+	case keymap::Cmd::Left:
+	case keymap::Cmd::Right:
+	case keymap::Cmd::Up:
+	case keymap::Cmd::Down:
+	case keymap::Cmd::PageUp:
+	case keymap::Cmd::PageDown:
+	case keymap::Cmd::SeekBack:
+	case keymap::Cmd::SeekForward:
+	case keymap::Cmd::SkipBack:
+	case keymap::Cmd::SkipForward:
 	  {
-	    // Left/right step by 30s; up/down and the shoulder buttons step by
-	    // 5 minutes (up is forwards, as in most media players).
+	    // Left/right step by 30s; up/down, the shoulder buttons and the
+	    // remote's transport keys step by 5 minutes (up is forwards, as in
+	    // most media players).
 	    int64_t delta = 0;
-	    if (key == Rml::Input::KI_LEFT)  delta = -kSeekSmallUs;
-	    if (key == Rml::Input::KI_RIGHT) delta = +kSeekSmallUs;
-	    if (key == Rml::Input::KI_UP)    delta = +kSeekLargeUs;
-	    if (key == Rml::Input::KI_DOWN)  delta = -kSeekLargeUs;
-	    if (key == Rml::Input::KI_PRIOR) delta = -kSeekLargeUs;
-	    if (key == Rml::Input::KI_NEXT)  delta = +kSeekLargeUs;
+	    switch (cmd)
+	      {
+	      case keymap::Cmd::Left:        delta = -kSeekSmallUs; break;
+	      case keymap::Cmd::Right:       delta = +kSeekSmallUs; break;
+	      case keymap::Cmd::Up:          delta = +kSeekLargeUs; break;
+	      case keymap::Cmd::Down:        delta = -kSeekLargeUs; break;
+	      case keymap::Cmd::PageUp:      delta = -kSeekLargeUs; break;
+	      case keymap::Cmd::PageDown:    delta = +kSeekLargeUs; break;
+	      case keymap::Cmd::SeekBack:    delta = -kSeekLargeUs; break;
+	      case keymap::Cmd::SeekForward: delta = +kSeekLargeUs; break;
+	      case keymap::Cmd::SkipBack:    delta = -kSeekLargeUs; break;
+	      case keymap::Cmd::SkipForward: delta = +kSeekLargeUs; break;
+	      default: break;
+	      }
 	    if (player_->CanSeek())
 	      {
 		player_->SeekRelative(delta);
@@ -206,14 +222,14 @@ void App::HandleKeyWatch(Rml::Event& event, int key)
 	    event.StopPropagation();
 	    return;
 	  }
-	case Rml::Input::KI_RETURN:
-	case Rml::Input::KI_NUMPADENTER: // cross: play / pause
+	case keymap::Cmd::Ok:        // cross
+	case keymap::Cmd::PlayPause: // the remote's play/pause button
 	  player_->TogglePause();
 	  UpdateWatchOverlay();
 	  ShowWatchInfo(kWatchInfoSec);
 	  event.StopPropagation();
 	  return;
-	case Rml::Input::KI_SPACE: // square: toggle the info bar
+	case keymap::Cmd::Secondary: // square: toggle the info bar
 	  if (bind_info_visible_ && !player_->IsPaused())
 	    {
 	      bind_info_visible_ = false;
@@ -223,7 +239,9 @@ void App::HandleKeyWatch(Rml::Event& event, int key)
 	    ShowWatchInfo(kWatchInfoSec);
 	  event.StopPropagation();
 	  return;
-	case Rml::Input::KI_BACK: // circle: back to the list
+	case keymap::Cmd::Back:  // circle: back to the list
+	case keymap::Cmd::Stop:
+	case keymap::Cmd::Guide:
 	  StopPlayback();
 	  event.StopPropagation();
 	  return;
@@ -232,14 +250,18 @@ void App::HandleKeyWatch(Rml::Event& event, int key)
 	}
     }
 
-  switch (key)
+  switch (cmd)
     {
-    case Rml::Input::KI_UP: // zap: previous channel in the list
-    case Rml::Input::KI_DOWN:
-    case Rml::Input::KI_PRIOR:
-    case Rml::Input::KI_NEXT:
+    case keymap::Cmd::Up: // zap: previous channel in the list
+    case keymap::Cmd::Down:
+    case keymap::Cmd::PageUp:
+    case keymap::Cmd::PageDown:
+    case keymap::Cmd::SkipBack:
+    case keymap::Cmd::SkipForward:
       {
-	const int delta = (key == Rml::Input::KI_UP || key == Rml::Input::KI_PRIOR) ? +1 : -1;
+	const bool up = (cmd == keymap::Cmd::Up || cmd == keymap::Cmd::PageUp ||
+			 cmd == keymap::Cmd::SkipForward);
+	const int delta = up ? +1 : -1;
 	const int prev = sel_channel_;
 	SetZone(Zone::Channels);
 	MoveSelection(delta);
@@ -249,8 +271,11 @@ void App::HandleKeyWatch(Rml::Event& event, int key)
 	  ShowWatchInfo(kWatchInfoSec);
 	break;
       }
-    case Rml::Input::KI_RETURN: // toggle the info bar
-    case Rml::Input::KI_NUMPADENTER:
+    // Live TV cannot be paused, so play/pause falls back to the info bar
+    // rather than doing nothing at all.
+    case keymap::Cmd::Ok:
+    case keymap::Cmd::PlayPause:
+    case keymap::Cmd::Secondary:
       if (bind_info_visible_)
 	{
 	  bind_info_visible_ = false;
@@ -259,9 +284,11 @@ void App::HandleKeyWatch(Rml::Event& event, int key)
       else
 	ShowWatchInfo(kWatchInfoSec);
       break;
-    case Rml::Input::KI_LEFT:
-    case Rml::Input::KI_BACK: // back to the channel list, keep watching? No:
-      StopPlayback();         // Back means back. OK from the list resumes.
+    case keymap::Cmd::Left:
+    case keymap::Cmd::Back: // back to the channel list, keep watching? No:
+    case keymap::Cmd::Stop: // Back means back. OK from the list resumes.
+    case keymap::Cmd::Guide:
+      StopPlayback();
       break;
     default:
       return;
