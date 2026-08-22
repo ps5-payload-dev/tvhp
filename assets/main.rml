@@ -202,17 +202,19 @@
 
 		<!-- Watch mode: full-screen video with an auto-hiding info bar -->
 		<div id="watch-bar" data-if="watching && info_visible">
-			<div class="watch-num" data-class-transport="watch_recorded">{{watch_num}}</div>
-			<div class="watch-main">
-				<div class="watch-name">{{watch_name}}</div>
-				<div class="watch-now" data-if="watch_now != ''">{{watch_now}}</div>
-				<div class="watch-progress" data-if="watch_time != ''">
-					<div class="bar" data-style-width="watch_progress"/>
+			<div class="watch-row">
+				<div class="watch-num" data-class-transport="watch_recorded">{{watch_num}}</div>
+				<div class="watch-main">
+					<div class="watch-name">{{watch_name}}</div>
+					<div class="watch-now" data-if="watch_now != ''">{{watch_now}}</div>
+				</div>
+				<div class="watch-side">
+					<div class="watch-time">{{watch_time}}</div>
+					<div class="watch-status" data-if="player_status != ''">{{player_status}}</div>
 				</div>
 			</div>
-			<div class="watch-side">
-				<div class="watch-time">{{watch_time}}</div>
-				<div class="watch-status" data-if="player_status != ''">{{player_status}}</div>
+			<div class="watch-progress" data-if="watch_time != ''">
+				<div class="bar" data-style-width="watch_progress"/>
 			</div>
 		</div>
 

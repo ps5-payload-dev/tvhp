@@ -24,11 +24,18 @@ body.watching #footer {
 	right: 0;
 	bottom: 0;
 	display: flex;
-	flex-direction: row;
-	align-items: center;
+	flex-direction: column;
 	padding: 36px 56px 44px 56px;
 	background-color: #0a0e18d8;
 	border-top: 2px #ffffff14;
+}
+
+/* The channel number, title block and clock share one row; the progress
+ * bar is a sibling below them so it can span the bar's full width. */
+.watch-row {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 .watch-num {
@@ -66,13 +73,14 @@ body.watching #footer {
 }
 
 .watch-progress {
-	margin-top: 16px;
+	display: block;
+	margin-top: 24px;
 	width: 100%;
-	max-width: 900px;
 	height: 8px;
 	background-color: #ffffff1a;
 }
 .watch-progress .bar {
+	display: block;
 	height: 8px;
 	background-color: #f5b453;
 }
