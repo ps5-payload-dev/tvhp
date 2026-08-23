@@ -1,3 +1,4 @@
+#include <filesystem>
 #include <iostream>
 
 #include <RmlUi/Core.h>
@@ -10,6 +11,7 @@
 
 
 int SDL_main(int argc, char* args[]) {
+  const std::string cwd = std::filesystem::current_path();
   Rml::Context* ctx;
   std::string err;
   App app;
@@ -29,11 +31,11 @@ int SDL_main(int argc, char* args[]) {
     return -1;
   }
 
-  Rml::LoadFontFace("fonts/LatoLatin-Bold.ttf", false);
-  Rml::LoadFontFace("fonts/LatoLatin-BoldItalic.ttf", false);
-  Rml::LoadFontFace("fonts/LatoLatin-Italic.ttf", false);
-  Rml::LoadFontFace("fonts/LatoLatin-Regular.ttf", false);
-  Rml::LoadFontFace("fonts/NotoEmoji-VariableFont_wght.ttf", true);
+  Rml::LoadFontFace(cwd + "/fonts/LatoLatin-Bold.ttf", false);
+  Rml::LoadFontFace(cwd + "/fonts/LatoLatin-BoldItalic.ttf", false);
+  Rml::LoadFontFace(cwd + "/fonts/LatoLatin-Italic.ttf", false);
+  Rml::LoadFontFace(cwd + "/fonts/LatoLatin-Regular.ttf", false);
+  Rml::LoadFontFace(cwd + "/fonts/NotoEmoji-VariableFont_wght.ttf", true);
 
   if (!app.Initialize(ctx, err)) {
     Rml::Log::Message(Rml::Log::LT_ERROR, "Failed to initialize app: %s", err.c_str());

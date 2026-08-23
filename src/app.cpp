@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cstdio>
 #include <ctime>
+#include <filesystem>
 
 #include "app.h"
 #include "app_internal.h"
@@ -18,13 +19,14 @@ App::App() : player_(std::make_unique<Player>()) {}
 App::~App() = default;
 
 bool App::Initialize(Rml::Context* context, std::string& error) {
+  const std::string cwd = std::filesystem::current_path();
   config_.Load(kConfigPath);
   sel_server_ = config_.LastUsed();
 
   if (!SetupDataModel(context, error))
     return false;
 
-  if (!(document_ = context->LoadDocument("assets/main.rml"))) {
+  if (!(document_ = context->LoadDocument(cwd + "/assets/main.rml"))) {
     error = "failed to load assets/main.rml";
     return false;
   }
