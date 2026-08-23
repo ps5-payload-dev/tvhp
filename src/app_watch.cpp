@@ -70,11 +70,6 @@ void App::ExitWatch()
       bind_info_visible_ = false;
       model_.DirtyVariable("info_visible");
     }
-  if (bind_watch_paused_)
-    {
-      bind_watch_paused_ = false;
-      model_.DirtyVariable("watch_paused");
-    }
 }
 
 void App::ShowWatchInfo(double seconds)
@@ -161,13 +156,6 @@ void App::UpdateWatchOverlay()
   set(bind_watch_time_, now_time, "watch_time");
   set(bind_watch_progress_, progress, "watch_progress");
   set(bind_player_status_, player_ ? Rml::String(player_->StatusText()) : Rml::String(), "player_status");
-
-  const bool paused = player_ && player_->IsPaused();
-  if (bind_watch_paused_ != paused)
-    {
-      bind_watch_paused_ = paused;
-      model_.DirtyVariable("watch_paused");
-    }
 }
 
 void App::HandleKeyWatch(Rml::Event& event, int key)

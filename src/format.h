@@ -8,8 +8,7 @@
 
 // Presentation helpers shared by the guide, the recordings list and the
 // playback overlay. Pure functions of their arguments (plus the local
-// timezone and, for FmtDay, the current date), so they can be tested on
-// their own - see tools/test_format.cpp.
+// timezone and, for FmtDay, the current date).
 namespace textfmt {
 
 // Unix seconds -> "20:00" in local time.

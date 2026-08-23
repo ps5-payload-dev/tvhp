@@ -171,8 +171,6 @@ void App::DeleteSelectedServer() {
 
 void App::SetConnectZone(Zone zone) {
   zone_ = zone;
-  bind_connect_zone_ = (zone == Zone::ServerList) ? "list" : "form";
-  model_.DirtyVariable("connect_zone");
 }
 
 void App::StartConnect() {

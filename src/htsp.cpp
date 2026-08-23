@@ -344,12 +344,8 @@ void HtspClient::HandleAsyncMessage(htsmsg_t* msg)
 	ch.number = u32;
       if (const char* name = htsmsg_get_str(msg, "channelName"))
 	ch.name = name;
-      if (const char* icon = htsmsg_get_str(msg, "channelIcon"))
-	ch.icon_url = icon;
       if (!htsmsg_get_u32(msg, "eventId", &u32))
 	ch.event_id = u32;
-      if (!htsmsg_get_u32(msg, "nextEventId", &u32))
-	ch.next_event_id = u32;
       generation++;
       if (initial_sync_done && update_cb)
 	update_cb(SortedChannels(channels));
@@ -539,10 +535,6 @@ void HtspClient::UpsertEventLocked(htsmsg_t* msg, bool is_update)
     ev.season = u32;
   if (!htsmsg_get_u32(msg, "episodeNumber", &u32))
     ev.episode = u32;
-  if (!htsmsg_get_u32(msg, "contentType", &u32))
-    ev.content_type = u32;
-  if (!htsmsg_get_u32(msg, "dvrId", &u32))
-    ev.dvr_id = u32;
 
   if (!ev.channel_id || !ev.start)
     return;
@@ -638,11 +630,6 @@ HtspClient::NowNext HtspClient::GetNowNext(uint32_t channel_id) const
 	  result.has_now = true;
 	  result.now = cur->second;
 	}
-    }
-  if (after != by_start.end())
-    {
-      result.has_next = true;
-      result.next = after->second;
     }
   return result;
 }
@@ -765,10 +752,6 @@ void HtspClient::UpsertDvrEntryLocked(htsmsg_t* msg)
     e.start = s64;
   if (!htsmsg_get_s64(msg, "stop", &s64))
     e.stop = s64;
-  if (!htsmsg_get_s64(msg, "startExtra", &s64))
-    e.start_extra = s64;
-  if (!htsmsg_get_s64(msg, "stopExtra", &s64))
-    e.stop_extra = s64;
   if (!htsmsg_get_s64(msg, "dataSize", &s64))
     e.data_size = s64;
   if (!htsmsg_get_u32(msg, "seasonNumber", &u32))
@@ -904,19 +887,6 @@ bool HtspClient::RecordEvent(uint32_t event_id, std::string& error, uint32_t* ou
   return SimpleRequest(msg, error, out_id);
 }
 
-bool HtspClient::RecordTimespan(uint32_t channel_id, int64_t start, int64_t stop,
-				const std::string& title, std::string& error, uint32_t* out_id)
-{
-  htsmsg_t* msg = htsmsg_create_map();
-  htsmsg_add_str(msg, "method", "addDvrEntry");
-  htsmsg_add_u32(msg, "channelId", channel_id);
-  htsmsg_add_s64(msg, "start", start);
-  htsmsg_add_s64(msg, "stop", stop);
-  if (!title.empty())
-    htsmsg_add_str(msg, "title", title.c_str());
-  return SimpleRequest(msg, error, out_id);
-}
-
 bool HtspClient::CancelDvrEntry(uint32_t dvr_id, std::string& error)
 {
   htsmsg_t* msg = htsmsg_create_map();
@@ -1016,31 +986,6 @@ int64_t HtspClient::FileRead(uint32_t handle, void* buf, int64_t size, int64_t o
       return -1;
     }
   return got;
-}
-
-int64_t HtspClient::FileSeek(uint32_t handle, int64_t offset, const char* whence, std::string& error)
-{
-  htsmsg_t* msg = htsmsg_create_map();
-  htsmsg_add_str(msg, "method", "fileSeek");
-  htsmsg_add_u32(msg, "id", handle);
-  htsmsg_add_s64(msg, "offset", offset);
-  htsmsg_add_str(msg, "whence", whence ? whence : "SEEK_SET");
-
-  htsmsg_t* reply = SendRequest(msg, kFileRequestTimeoutMs, error);
-  if (!reply)
-    return -1;
-
-  const std::string err = ReplyError(reply);
-  int64_t pos = 0;
-  const bool have_pos = htsmsg_get_s64(reply, "offset", &pos) == 0;
-  htsmsg_destroy(reply);
-
-  if (!err.empty())
-    {
-      error = err;
-      return -1;
-    }
-  return have_pos ? pos : -1;
 }
 
 bool HtspClient::FileStat(uint32_t handle, int64_t* size, std::string& error)

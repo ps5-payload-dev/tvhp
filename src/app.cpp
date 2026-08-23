@@ -18,8 +18,6 @@ App::App() : player_(std::make_unique<Player>()) {}
 App::~App() = default;
 
 bool App::Initialize(Rml::Context* context, std::string& error) {
-  context_ = context;
-
   config_.Load(kConfigPath);
   sel_server_ = config_.LastUsed();
 
@@ -111,7 +109,6 @@ bool App::SetupDataModel(Rml::Context* context, std::string& error) {
   ctor.Bind("view", &bind_view_);
   ctor.Bind("section", &bind_section_);
   ctor.Bind("zone", &bind_zone_);
-  ctor.Bind("connect_zone", &bind_connect_zone_);
   ctor.Bind("dialog", &bind_dialog_);
   ctor.Bind("dialog_title", &bind_dialog_title_);
   ctor.Bind("status", &bind_status_);
@@ -148,7 +145,6 @@ bool App::SetupDataModel(Rml::Context* context, std::string& error) {
   ctor.Bind("watch_time", &bind_watch_time_);
   ctor.Bind("watch_progress", &bind_watch_progress_);
   ctor.Bind("watch_recorded", &bind_watch_recorded_);
-  ctor.Bind("watch_paused", &bind_watch_paused_);
 
   ctor.BindEventCallback("save", [this](Rml::DataModelHandle, Rml::Event&, const Rml::VariantList&) {
     SaveServer();

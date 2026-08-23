@@ -23,13 +23,6 @@
 	padding: 0px 64px;
 }
 
-#topbar .brand {
-	display: inline-block;
-	font-size: 36px;
-	font-weight: bold;
-	letter-spacing: 6px;
-	color: #f5b453;
-}
 
 #topbar .server {
 	display: inline-block;
@@ -77,17 +70,6 @@
 	padding: 0px 64px;
 }
 
-.chip {
-	box-sizing: border-box;
-	display: inline-block;
-	padding: 7px 15px;
-	font-size: 19px;
-	font-weight: bold;
-	letter-spacing: 1px;
-	color: #8593ab;
-	background-color: #ffffff0d;
-	border: 1px #ffffff1f;
-}
 
 .hint {
 	display: inline-block;
@@ -97,8 +79,8 @@
 	color: #6a7488;
 }
 
-/* PlayStation-style key hint icons (dpad, cross, circle, square, triangle).
- * The source art is 128x128, so these scale up cleanly. */
+/* PlayStation-style key hint icons (cross, square, triangle). The source art
+ * is 128x128, so these scale up cleanly. */
 .key-icon {
 	display: inline-block;
 	width: 48px;

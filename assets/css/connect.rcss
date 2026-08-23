@@ -63,9 +63,6 @@
 	overflow: hidden;
 }
 
-.server-row.add .srvname {
-	color: #8593ab;
-}
 
 .server-row.selected {
 	background-color: #1a2336;
@@ -124,24 +121,6 @@
 	color: #ffffff;
 }
 
-.dialog-hints {
-	display: block;
-	margin-top: 28px;
-	text-align: center;
-}
-
-.dialog-hints .key-icon {
-	width: 40px;
-	height: 40px;
-	margin-left: 18px;
-}
-
-.dialog-hints .hint {
-	margin-left: 8px;
-	font-size: 21px;
-	color: #8593ab;
-	vertical-align: middle;
-}
 
 .field {
 	display: flex;

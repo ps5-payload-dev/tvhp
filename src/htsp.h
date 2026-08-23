@@ -21,9 +21,7 @@ struct HtspChannel {
   uint32_t id = 0;
   uint32_t number = 0;
   std::string name;
-  std::string icon_url;       // http(s) URL served by tvheadend, may be empty
   uint32_t event_id = 0;      // current EPG event, 0 = unknown
-  uint32_t next_event_id = 0; // next EPG event, 0 = unknown
 };
 
 // One EPG event, as pushed by eventAdd/eventUpdate. Times are unix seconds.
@@ -38,8 +36,6 @@ struct HtspEvent {
   std::string description;
   uint32_t season = 0;  // 0 = not set
   uint32_t episode = 0; // 0 = not set
-  uint32_t content_type = 0;
-  uint32_t dvr_id = 0;  // recording scheduled for this event, 0 = none
 };
 
 // One DVR entry (a scheduled, running or finished recording), as pushed by
@@ -48,10 +44,8 @@ struct HtspDvrEntry {
   uint32_t id = 0;
   uint32_t channel_id = 0;
   uint32_t event_id = 0;
-  int64_t start = 0;       // scheduled start (excluding start_extra)
+  int64_t start = 0;
   int64_t stop = 0;
-  int64_t start_extra = 0; // pre-roll, minutes
-  int64_t stop_extra = 0;  // post-roll, minutes
   std::string title;
   std::string subtitle;
   std::string summary;
@@ -102,7 +96,7 @@ struct HtspMuxPacket {
 //   enableAsyncMetadata  -> server pushes channelAdd/eventAdd/dvrEntryAdd/...
 //                           then initialSyncCompleted
 //   subscribe(channelId) -> subscriptionStart followed by a stream of muxpkt
-//   fileOpen("/dvrfile/ID") + fileRead/fileSeek -> recording playback
+//   fileOpen("/dvrfile/ID") + fileRead/fileStat -> recording playback
 class HtspClient {
 public:
   ~HtspClient();
@@ -140,13 +134,11 @@ public:
   // time. max_events = 0 means no limit.
   std::vector<HtspEvent> GetChannelEvents(uint32_t channel_id, size_t max_events = 0) const;
 
-  // Fills the currently airing and next event for a channel. Either output
-  // may be left untouched; the return values indicate what was found.
+  // Fills the currently airing event for a channel. 'now' is left untouched
+  // when has_now is false.
   struct NowNext {
     bool has_now = false;
-    bool has_next = false;
     HtspEvent now;
-    HtspEvent next;
   };
   NowNext GetNowNext(uint32_t channel_id) const;
 
@@ -164,10 +156,6 @@ public:
   // entry id is stored in *out_id when out_id is non-null. The entry itself
   // arrives asynchronously as a dvrEntryAdd.
   bool RecordEvent(uint32_t event_id, std::string& error, uint32_t* out_id = nullptr);
-
-  // Schedules a manual (time based) recording on a channel.
-  bool RecordTimespan(uint32_t channel_id, int64_t start, int64_t stop,
-		      const std::string& title, std::string& error, uint32_t* out_id = nullptr);
 
   // cancelDvrEntry keeps the entry (and any partial file) but stops or
   // unschedules it; deleteDvrEntry removes the entry and its file.
@@ -199,16 +187,12 @@ public:
   // position. Returns the number of bytes read (may be less than requested,
   // 0 at end of file) or -1 on error.
   int64_t FileRead(uint32_t handle, void* buf, int64_t size, int64_t offset, std::string& error);
-  // whence is "SEEK_SET", "SEEK_CUR" or "SEEK_END". Returns the new absolute
-  // position, or -1 on error.
-  int64_t FileSeek(uint32_t handle, int64_t offset, const char* whence, std::string& error);
   bool FileStat(uint32_t handle, int64_t* size, std::string& error);
   void FileClose(uint32_t handle);
 
   void Disconnect();
 
   std::string ServerInfo() const { return server_info; }
-  int ProtocolVersion() const { return htsp_version; }
   // Recording playback needs fileOpen, which arrived in HTSP v8.
   bool SupportsFileApi() const { return htsp_version >= 8; }
 

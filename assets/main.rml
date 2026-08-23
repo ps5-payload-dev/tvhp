@@ -139,7 +139,7 @@
 						</div>
 					</div>
 
-					<div id="detail" class="detail-box">
+					<div class="detail-box">
 						<div class="detail-title">{{detail_title}}</div>
 						<div class="detail-meta" data-if="detail_meta != ''">{{detail_meta}}</div>
 						<div class="detail-rec" data-if="detail_rec != ''">{{detail_rec}}</div>
@@ -175,7 +175,7 @@
 						<span class="eyebrow">Details</span>
 					</div>
 
-					<div id="rec-detail" class="detail-box tall">
+					<div class="detail-box tall">
 						<div class="detail-title">{{detail_title}}</div>
 						<div class="detail-meta" data-if="detail_meta != ''">{{detail_meta}}</div>
 						<div class="detail-rec" data-if="detail_rec != ''">{{detail_rec}}</div>

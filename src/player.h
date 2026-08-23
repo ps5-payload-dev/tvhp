@@ -70,7 +70,8 @@ private:
 //                queues. No container, no demuxer.
 //
 //   Recordings   fileOpen("/dvrfile/<id>") -> a libavformat AVIOContext whose
-//                read/seek callbacks are HTSP fileRead/fileSeek, demuxed by
+//                read/seek callbacks are HTSP fileRead/fileStat (the seek is
+//                resolved client-side), demuxed by
 //                libavformat on a private thread. This is what makes seeking
 //                and playback of still-recording files work.
 //

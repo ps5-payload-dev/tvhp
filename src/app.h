@@ -143,7 +143,6 @@ private:
   Rml::String bind_view_ = "connect";
   Rml::String bind_section_ = "channels";
   Rml::String bind_zone_ = "channels";
-  Rml::String bind_connect_zone_ = "list";
   Rml::String bind_dialog_;        // "", "add" or "edit"
   Rml::String bind_dialog_title_;
   Rml::String bind_status_;       // connect screen status line
@@ -164,7 +163,6 @@ private:
   Rml::String bind_watch_time_;
   Rml::String bind_watch_progress_ = "0%"; // data-style-width; never empty
   bool bind_watch_recorded_ = false;       // playing a recording, not live
-  bool bind_watch_paused_ = false;
 
   // Connect screen bindings.
   std::vector<ServerRow> server_rows_;
@@ -197,7 +195,6 @@ private:
   ServerConfig config_;
   HtspClient client_;
   std::unique_ptr<Player> player_;
-  Rml::Context* context_ = nullptr;
   Rml::ElementDocument* document_ = nullptr;
 
   View view_ = View::Connect;
